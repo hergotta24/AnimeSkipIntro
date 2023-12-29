@@ -31,3 +31,10 @@ def slide_mouse_and_screenshot(start_x, start_y, end_x, end_y, duration, interva
 
     except KeyboardInterrupt:
             print("\nStopped.")
+
+def default_skip_intro(x, y):
+    pyautogui.moveTo(x, y)
+    time.sleep(1)
+    pyautogui.click(x, y)
+    time.sleep(1)
+    pyautogui.press('space')
