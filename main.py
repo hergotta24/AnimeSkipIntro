@@ -27,7 +27,7 @@ if __name__ == "__main__":
         intro.default_skip_intro(x3, y3)
         # outro.continuously_take_screenshots(template_image_path2, x, y)
         outro.continuously_grab_images(template_image_path2, x4, y)
-        time.sleep(2)
+        time.sleep(4)
 
 
    

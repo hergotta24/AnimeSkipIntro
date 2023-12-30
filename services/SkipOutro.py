@@ -46,11 +46,6 @@ def continuously_grab_images(template_path, click_x, click_y):
         #     cv2.destroyAllWindows()
         #     break
             
-            
-
-            
-              
-        
 # Click at specified coordinates
 def click_at_coordinates(x, y):
     print(x, y)
@@ -73,6 +68,8 @@ def find_image(template_path, screen):
 
 # Move the mouse to specific coordinates and click
 def click_coordinates(x, y):
+    pyautogui.moveTo(x, y)
+    time.sleep(1)
     pyautogui.click(x, y)
 
 # Take a screenshot at the current mouse position and save to a folder
