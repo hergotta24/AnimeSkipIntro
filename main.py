@@ -25,6 +25,7 @@ if __name__ == "__main__":
         time.sleep(1)
     while True:
         intro.default_skip_intro(x3, y3)
+        intro.find_title_card(x3, y3, x3 + 400, y3, "4:20")
         # outro.continuously_take_screenshots(template_image_path2, x, y)
         outro.continuously_grab_images(template_image_path2, x4, y)
         time.sleep(4)
