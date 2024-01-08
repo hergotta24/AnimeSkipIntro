@@ -1,5 +1,11 @@
 import pyautogui
 import time
+import numpy as np
+from PIL import ImageGrab
+import pytesseract
+import cv2
+import re
+import os
 
 def slide_mouse_and_screenshot(start_x, start_y, end_x, end_y, duration, interval=10):
     # Set the initial position of the mouse
@@ -42,3 +48,44 @@ def default_skip_intro(x, y):
         time.sleep(1)
         pyautogui.press('space')
         first_skip = False
+
+def find_title_card(start_x, start_y, end_x, duration, title_card):
+    pattern = r'= (\d+):(\d+)'
+    minutes, seconds = map(int, title_card.split(':'))
+    title_card_seconds = minutes * 60 + seconds 
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Users\hergo\AppData\Local\Programs\Tesseract-OCR\Tesseract'
+    pyautogui.moveTo(start_x, start_y)
+
+    current_x = start_x
+    while current_x < end_x:
+        pyautogui.moveTo(current_x + 2, start_y,.1)
+        timestampImage = np.array(ImageGrab.grab(bbox=(current_x - 70, start_y - 60, current_x + 70, start_y + 20)))
+        image_text = pytesseract.image_to_string(timestampImage)
+        current_time = image_text_to_seconds(image_text)
+        if(abs(title_card_seconds - current_time) <= 5):
+            pyautogui.click(current_x, start_y)
+            return
+        elif(title_card_seconds - current_time > 30):
+            current_x = current_x + 25
+        elif(title_card_seconds - current_time > 20):
+            current_x = current_x + 15
+        elif(title_card_seconds - current_time > 10):
+            current_x = current_x + 8
+        elif(current_time > title_card_seconds):
+            current_x = current_x - 5
+        else:
+            current_x = current_x + 2
+
+    pyautogui.click(start_x, start_y)
+    return
+
+def image_text_to_seconds(image_text):
+    string_number = re.sub(r"[^0-9]", "", image_text)
+    if(len(string_number) < 3):
+        return 0
+    elif(len(string_number) == 3):
+        minutes = int(string_number[0]) * 60
+        seconds = int(string_number[1] + string_number[2])
+        return minutes + seconds
+    return 0
+    
